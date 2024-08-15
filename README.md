@@ -1,4 +1,4 @@
-#####My Stuff
+### My Stuff
 
 This is a project to keep better track of the stuff you buy.
 
