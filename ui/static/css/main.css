@@ -1,0 +1,21 @@
+* {
+    font-family: "Nunito";
+}
+
+html, body {
+    height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+}
+
+footer {
+    text-align: center;
+    margin: 20px 0;
+}
