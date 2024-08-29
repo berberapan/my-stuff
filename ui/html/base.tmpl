@@ -1,0 +1,20 @@
+{{define "base"}}
+<!doctype html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>My stuff</title>
+    </head>
+    <body>
+        <header>
+            <h1>My stuff</h1>
+        </header>
+        <main>
+            {{template "main" .}}
+        </main>
+        <footer>
+           &copy; 2024. Powered by <a href='https://golang.org/'>Go</a>   
+        </footer>
+    </body>
+</html>
+{{end}}
