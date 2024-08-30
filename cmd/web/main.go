@@ -1,11 +1,16 @@
 package main
 
 import (
+	"context"
 	"flag"
+	"fmt"
 	"html/template"
 	"log/slog"
 	"net/http"
 	"os"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/joho/godotenv"
 )
 
 type application struct {
@@ -14,9 +19,24 @@ type application struct {
 }
 
 func main() {
-	addr := flag.String("addr", ":8080", "HTTP network address")
-	flag.Parse()
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	err := godotenv.Load()
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
+
+	dsnString := fmt.Sprintf("postgres://%s:%s@localhost:5432/mystuff?sslmode=disable", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"))
+	addr := flag.String("addr", ":8080", "HTTP network address")
+	dsn := flag.String("dsn", dsnString, "PostgreSQL data source name")
+	flag.Parse()
+
+	db, err := openDB(*dsn)
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
+	defer db.Close()
 
 	templateCache, err := newTemplateCache()
 	if err != nil {
@@ -38,4 +58,17 @@ func main() {
 	err = srv.ListenAndServe()
 	logger.Error(err.Error())
 	os.Exit(1)
+}
+
+func openDB(dsn string) (*pgxpool.Pool, error) {
+	db, err := pgxpool.New(context.Background(), dsn)
+	if err != nil {
+		return nil, err
+	}
+	err = db.Ping(context.Background())
+	if err != nil {
+		db.Close()
+		return nil, err
+	}
+	return db, nil
 }
