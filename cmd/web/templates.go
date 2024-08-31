@@ -20,6 +20,7 @@ func newTemplateCache() (map[string]*template.Template, error) {
 		name := filepath.Base(page)
 		patterns := []string{
 			"html/base.tmpl",
+			"html/partials/navbar.tmpl",
 			page,
 		}
 

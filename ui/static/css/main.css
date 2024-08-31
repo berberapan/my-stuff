@@ -6,6 +6,35 @@ html, body {
     height: 100vh;
 }
 
+header, nav, main, footer {
+    padding: 2px calc((100% - 850px) / 2) 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+nav div:first-child {
+    justify-content: flex-start;
+}
+
+nav div:last-child {
+    justify-content: flex-end;
+}
+
+nav div:last-child a {
+    margin-left: 1em;
+    margin-right 0;
+}
+
+
+nav a {
+    display: inline-block;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -16,6 +45,10 @@ main {
 }
 
 footer {
-    text-align: center;
-    margin: 20px 0;
+    margin: 15px auto;
+}
+
+footer img {
+    width: 20px;
+    vertical-align: -5px;
 }

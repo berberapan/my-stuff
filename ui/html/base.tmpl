@@ -13,11 +13,13 @@
         <header>
             <h1>My stuff</h1>
         </header>
+        {{template "navbar" .}}
         <main>
             {{template "main" .}}
         </main>
         <footer>
-           &copy; 2024. Powered by <a href='https://golang.org/'>Go</a>   
+            &copy; 2024.
+            <a href='https://github.com/berberapan/my-stuff' target='_blank'><img src='static/img/github-mark.svg' alt='github link'></a>
         </footer>
     </body>
 </html>
