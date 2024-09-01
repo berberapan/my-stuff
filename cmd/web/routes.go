@@ -12,6 +12,7 @@ func (app *application) routes() http.Handler {
 	mux.Handle("GET /static/", http.FileServerFS(ui.Files))
 
 	mux.HandleFunc("GET /{$}", app.home)
+	mux.HandleFunc("GET /signup", app.signup)
 
 	return mux
 }

@@ -26,7 +26,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	dsnString := fmt.Sprintf("postgres://%s:%s@localhost:5432/mystuff?sslmode=disable", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"))
+	dsnString := fmt.Sprintf("postgres://%s?sslmode=disable", os.Getenv("DB_DETAILS"))
 	addr := flag.String("addr", ":8080", "HTTP network address")
 	dsn := flag.String("dsn", dsnString, "PostgreSQL data source name")
 	flag.Parse()

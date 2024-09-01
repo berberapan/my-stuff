@@ -4,6 +4,11 @@
 
 html, body {
     height: 100vh;
+    background-color: #fafafa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 header, nav, main, footer {
@@ -14,6 +19,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 1em;
 }
 
 
@@ -42,10 +48,34 @@ body {
 
 main {
     flex-grow: 1;
+    padding-bottom: 20px;
+}
+
+form.signup {
+    border: 1px solid;
+    width: 50%;
+    margin: 15px auto 0;
+}
+
+form input[type='text'], form input[type='password'], form input[type='email'] {
+    width: 75%;
+    
+}
+
+form div {
+    padding: 10px 0;
+    text-align: center;
+}
+
+form label {
+    display: inline-block;
+    width: 75%;
+    margin-bottom: 5px; 
+    text-align: left;
 }
 
 footer {
-    margin: 15px auto;
+    margin: 10px auto;
 }
 
 footer img {
