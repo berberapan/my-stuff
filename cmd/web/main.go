@@ -8,14 +8,18 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
+	"github.com/alexedwards/scs/pgxstore"
+	"github.com/alexedwards/scs/v2"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 )
 
 type application struct {
-	logger        *slog.Logger
-	templateCache map[string]*template.Template
+	logger         *slog.Logger
+	templateCache  map[string]*template.Template
+	sessionManager *scs.SessionManager
 }
 
 func main() {
@@ -44,9 +48,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	sessionManager := scs.New()
+	sessionManager.Store = pgxstore.New(db)
+	sessionManager.Lifetime = 12 * time.Hour
+	sessionManager.Cookie.Secure = false // TODO change to true when TSL sorted
+
 	app := &application{
-		logger:        logger,
-		templateCache: templateCache,
+		logger:         logger,
+		templateCache:  templateCache,
+		sessionManager: sessionManager,
 	}
 
 	srv := &http.Server{

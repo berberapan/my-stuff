@@ -4,15 +4,21 @@ import (
 	"net/http"
 
 	"github.com/berberapan/my-stuff/ui"
+	"github.com/justinas/alice"
 )
 
 func (app *application) routes() http.Handler {
 	mux := http.NewServeMux()
 
 	mux.Handle("GET /static/", http.FileServerFS(ui.Files))
+	mux.HandleFunc("GET /healthz", healthz)
 
-	mux.HandleFunc("GET /{$}", app.home)
-	mux.HandleFunc("GET /signup", app.signup)
+	dynamicMiddleware := alice.New(app.sessionManager.LoadAndSave)
 
-	return mux
+	mux.Handle("GET /{$}", dynamicMiddleware.ThenFunc(app.home))
+	mux.Handle("GET /signup", dynamicMiddleware.ThenFunc(app.signup))
+
+	standardMiddleware := alice.New(app.logRequest, app.recoverPanic)
+
+	return standardMiddleware.Then(mux)
 }
