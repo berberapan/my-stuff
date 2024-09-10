@@ -8,6 +8,11 @@ import (
 	"github.com/berberapan/my-stuff/ui"
 )
 
+type templateData struct {
+	CurrentYear     int
+	IsAuthenticated bool
+}
+
 func newTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 

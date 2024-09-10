@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
+	"time"
 
 	"github.com/go-playground/form/v4"
 )
@@ -19,7 +20,11 @@ func (app *application) serverError(w http.ResponseWriter, r *http.Request, err 
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 }
 
-func (app *application) render(w http.ResponseWriter, r *http.Request, status int, page string) {
+func (app *application) clientError(w http.ResponseWriter, status int) {
+	http.Error(w, http.StatusText(status), status)
+}
+
+func (app *application) render(w http.ResponseWriter, r *http.Request, status int, page string, data templateData) {
 	ts, ok := app.templateCache[page]
 	if !ok {
 		err := fmt.Errorf("the template %s does not exist", page)
@@ -29,7 +34,7 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 
 	buf := new(bytes.Buffer)
 
-	err := ts.ExecuteTemplate(buf, "base", nil)
+	err := ts.ExecuteTemplate(buf, "base", data)
 	if err != nil {
 		app.serverError(w, r, err)
 	}
@@ -52,4 +57,19 @@ func (app *application) decodePostForm(r *http.Request, formData any) error {
 		return err
 	}
 	return nil
+}
+
+func (app *application) isAuthenticated(r *http.Request) bool {
+	isAuthenticated, ok := r.Context().Value(isAuthenticatedContextKey).(bool)
+	if !ok {
+		return false
+	}
+	return isAuthenticated
+}
+
+func (app *application) newTemplateData(r *http.Request) templateData {
+	return templateData{
+		CurrentYear:     time.Now().Year(),
+		IsAuthenticated: app.isAuthenticated(r),
+	}
 }

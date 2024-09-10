@@ -51,7 +51,7 @@ main {
     padding-bottom: 20px;
 }
 
-form.signup {
+form.signup, form.login {
     border: 1px solid;
     width: 50%;
     margin: 15px auto 0;

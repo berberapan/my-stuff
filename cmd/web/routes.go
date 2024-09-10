@@ -13,11 +13,13 @@ func (app *application) routes() http.Handler {
 	mux.Handle("GET /static/", http.FileServerFS(ui.Files))
 	mux.HandleFunc("GET /healthz", getHealthz)
 
-	dynamicMiddleware := alice.New(app.sessionManager.LoadAndSave)
+	dynamicMiddleware := alice.New(app.sessionManager.LoadAndSave, app.authenticate)
 
 	mux.Handle("GET /{$}", dynamicMiddleware.ThenFunc(app.getHome))
 	mux.Handle("GET /signup", dynamicMiddleware.ThenFunc(app.getSignup))
 	mux.Handle("POST /signup", dynamicMiddleware.ThenFunc(app.postSignup))
+	mux.Handle("GET /login", dynamicMiddleware.ThenFunc(app.getLogin))
+	mux.Handle("POST /login", dynamicMiddleware.ThenFunc(app.postLogin))
 
 	standardMiddleware := alice.New(app.logRequest, app.recoverPanic)
 
