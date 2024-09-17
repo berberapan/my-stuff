@@ -1,8 +1,9 @@
 <div align="center">
-  <img src="https://i.imgur.com/TEozer8.png" width="200">
+  
   <h1>
     My Stuff
   </h1>
+  <img src="https://i.imgur.com/TEozer8.png" width="200">
 </div>
 
 My Stuff is a web app to organise and keep better track of the stuff you buy.
