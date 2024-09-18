@@ -1,11 +1,21 @@
 {{define "navbar"}}
 <nav>
     <div>
-        <a href='/'>Start</a>
+        <a href='/' class='navlink'>Start</a>
+    {{if .IsAuthenticated}} 
+        <a href='/' class='navlink'>My Stuff</a> <!-- Placeholder link -->
+    {{end}}
     </div>
     <div>
-        <a href='/signup'>Sign up</a>
-        <a href='/login'>Login</a>
+    {{if .IsAuthenticated}}
+        <a href='/' class='navlink'>Profile</a>
+        <form action='/logout' method='POST'>
+            <button class='navlink'>Logout</button>
+        </form>
+    {{else}}
+        <a href='/signup' class='navlink'>Sign up</a> 
+        <a href='/login' class='navlink'>Login</a>
+    {{end}}
     </div>
 </nav>
 {{end}}

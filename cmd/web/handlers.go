@@ -76,6 +76,17 @@ func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+func (app *application) postLogout(w http.ResponseWriter, r *http.Request) {
+	err := app.sessionManager.RenewToken(r.Context())
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+	app.sessionManager.Remove(r.Context(), "authenticatedUserID")
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
 func getHealthz(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("OK"))
 }

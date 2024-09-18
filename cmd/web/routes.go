@@ -21,6 +21,8 @@ func (app *application) routes() http.Handler {
 	mux.Handle("GET /login", dynamicMiddleware.ThenFunc(app.getLogin))
 	mux.Handle("POST /login", dynamicMiddleware.ThenFunc(app.postLogin))
 
+	mux.Handle("POST /logout", dynamicMiddleware.ThenFunc(app.postLogout))
+
 	standardMiddleware := alice.New(app.logRequest, app.recoverPanic)
 
 	return standardMiddleware.Then(mux)

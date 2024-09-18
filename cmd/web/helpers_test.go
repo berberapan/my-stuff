@@ -40,7 +40,7 @@ func TestRender(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			rr := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
-			app.render(rr, r, tt.expectedStatus, tt.page)
+			app.render(rr, r, tt.expectedStatus, tt.page, templateData{})
 
 			assert.Equal(t, rr.Code, tt.expectedStatus)
 			assert.Equal(t, strings.TrimSpace(rr.Body.String()), strings.TrimSpace(tt.expectedBody))
