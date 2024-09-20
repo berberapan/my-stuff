@@ -3,13 +3,14 @@
     <div>
         <a href='/' class='navlink'>Start</a>
     {{if .IsAuthenticated}} 
-        <a href='/' class='navlink'>My Stuff</a> <!-- Placeholder link -->
+        <a href='/stuff' class='navlink'>My Stuff</a> 
     {{end}}
     </div>
     <div>
     {{if .IsAuthenticated}}
         <a href='/' class='navlink'>Profile</a>
         <form action='/logout' method='POST'>
+            <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
             <button class='navlink'>Logout</button>
         </form>
     {{else}}

@@ -11,6 +11,7 @@ import (
 type templateData struct {
 	CurrentYear     int
 	IsAuthenticated bool
+	CSRFToken       string
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {

@@ -1,5 +1,6 @@
 {{define "main"}}
 <form class='login' method='post'>
+    <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     <div>
         <label for='email'>Email</label><br>
         <input type='email' name='email' id='email' autocomplete='off'>

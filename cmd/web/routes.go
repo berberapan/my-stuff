@@ -13,7 +13,7 @@ func (app *application) routes() http.Handler {
 	mux.Handle("GET /static/", http.FileServerFS(ui.Files))
 	mux.HandleFunc("GET /healthz", getHealthz)
 
-	dynamicMiddleware := alice.New(app.sessionManager.LoadAndSave, app.authenticate)
+	dynamicMiddleware := alice.New(app.sessionManager.LoadAndSave, app.authenticate, csrfProtection)
 
 	mux.Handle("GET /{$}", dynamicMiddleware.ThenFunc(app.getHome))
 	mux.Handle("GET /signup", dynamicMiddleware.ThenFunc(app.getSignup))
@@ -21,7 +21,10 @@ func (app *application) routes() http.Handler {
 	mux.Handle("GET /login", dynamicMiddleware.ThenFunc(app.getLogin))
 	mux.Handle("POST /login", dynamicMiddleware.ThenFunc(app.postLogin))
 
-	mux.Handle("POST /logout", dynamicMiddleware.ThenFunc(app.postLogout))
+	protectedMiddleware := dynamicMiddleware.Append(app.requireAuthentication)
+
+	mux.Handle("POST /logout", protectedMiddleware.ThenFunc(app.postLogout))
+	mux.Handle("GET /stuff", protectedMiddleware.ThenFunc(app.getStuff))
 
 	standardMiddleware := alice.New(app.logRequest, app.recoverPanic)
 
