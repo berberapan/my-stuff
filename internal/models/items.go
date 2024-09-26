@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+)
 
 type Item struct {
 	ID              int
@@ -16,4 +20,8 @@ type Item struct {
 	UserID          int
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
+}
+
+type ItemModel struct {
+	DB *pgxpool.Pool
 }
