@@ -1,0 +1,9 @@
+{{define "main"}}
+<form class='addstuff' method='post'>
+    <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+    <div>
+        <label for='name'>Name</label><br>
+        <input type='text' name='name' id='name' autocomplete='off'>
+    </div>
+</form>
+{{end}}

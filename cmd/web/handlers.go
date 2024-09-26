@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/berberapan/my-stuff/internal/models"
 )
@@ -16,6 +17,18 @@ type signupForm struct {
 type loginForm struct {
 	Email    string `form:"email"`
 	Password string `form:"password"`
+}
+
+type addItemForm struct {
+	Name            string    `form:"name"`
+	Description     string    `form:"description,omitempty"`
+	Accessories     string    `form:"accessories,omitempty"`
+	Place           string    `form:"place,omitempty"`
+	Manual          string    `form:"manual,omitempty"`
+	Receipt         string    `form:"receipt,omitempty"`
+	WarrantyExp     time.Time `form:"warranty_exp,omitempty,02-01-2006"`
+	InsuranceExp    time.Time `form:"insurance_exp,omitempty,02-01-2006"`
+	AdditionalNotes string    `form:"additional_notes,omitempty"`
 }
 
 func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
