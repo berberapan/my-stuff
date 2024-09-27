@@ -91,6 +91,15 @@ form label {
     text-align: left;
 }
 
+.error {
+    color: #DF2026;
+    font-weight: bold;
+}
+
+.error + input {
+    border: 2px solid #DF2026;
+}
+
 footer {
     margin: 10px auto;
 }

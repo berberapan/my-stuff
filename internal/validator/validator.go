@@ -6,7 +6,7 @@ import (
 	"unicode/utf8"
 )
 
-var validEmailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+var ValidEmailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
 type Validator struct {
 	NonFieldErrors []string
@@ -46,4 +46,8 @@ func MinChars(value string, n int) bool {
 
 func MatchesRequiredPattern(value string, pattern *regexp.Regexp) bool {
 	return pattern.MatchString(value)
+}
+
+func MatchesOtherPassword(value, corresponding string) bool {
+	return value == corresponding
 }

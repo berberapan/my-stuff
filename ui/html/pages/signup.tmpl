@@ -1,19 +1,27 @@
 {{define "main"}}
-<form class='signup' method='post'>
+<form class='signup' method='post' novalidate>
     <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     <div>
         <label for='email'>Email</label><br>
+        {{with .Form.FieldErrors.email}}
+            <label class='error'>{{.}}</label>
+        {{end}}
         <input type='email' name='email' id='email' autocomplete='off'>
     </div>
     <div>
         <label for='password'>Password</label><br>
+        {{with .Form.FieldErrors.password}}
+            <label class='error'>{{.}}</label>
+        {{end}}
         <input type='password' name='password' id='password'>
     </div>
     <div>
         <label for='confirm'>Confirm Password</label><br>
+        {{with .Form.FieldErrors.confirm}}
+            <label class='error'>{{.}}</label>
+        {{end}}
         <input type='password' name='confirm' id='confirm'>
     </div>
-
     <div>
         <input type='submit' value='Sign up'>
     </div>
