@@ -155,13 +155,13 @@ func TestMatchesRequiredPattern(t *testing.T) {
 		{
 			name:     "Matching value and pattern",
 			value:    "test@example.com",
-			pattern:  *validEmailRegex,
+			pattern:  *ValidEmailRegex,
 			expected: true,
 		},
 		{
 			name:     "None matching value and pattern",
 			value:    "testexample.com",
-			pattern:  *validEmailRegex,
+			pattern:  *ValidEmailRegex,
 			expected: false,
 		},
 	}
