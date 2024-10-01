@@ -14,7 +14,7 @@ My Stuff is a web app to organise and keep better track of the stuff you buy.
 - Its accessories
 - Physical place
 
-etc
+etc.
 
 ## Notes
 This project was done as a part of a course on Devops at Nackademin.
