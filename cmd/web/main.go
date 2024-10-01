@@ -15,7 +15,6 @@ import (
 	"github.com/berberapan/my-stuff/internal/models"
 	"github.com/go-playground/form/v4"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/joho/godotenv"
 )
 
 type application struct {
@@ -28,13 +27,14 @@ type application struct {
 
 func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
-	err := godotenv.Load()
-	if err != nil {
-		logger.Error(err.Error())
+
+	dbAddress := os.Getenv("DB_DETAILS")
+	if dbAddress == "" {
+		logger.Error("Env for DB address not set")
 		os.Exit(1)
 	}
 
-	dsnString := fmt.Sprintf("postgres://%s?sslmode=disable", os.Getenv("DB_DETAILS"))
+	dsnString := fmt.Sprintf("postgres://%s?sslmode=require", os.Getenv("DB_DETAILS"))
 	addr := flag.String("addr", ":8080", "HTTP network address")
 	dsn := flag.String("dsn", dsnString, "PostgreSQL data source name")
 	flag.Parse()
