@@ -1,0 +1,11 @@
+{{define "main"}}
+    {{with .Item}}
+    <div class='item'>
+        <h3>{{.Name}}</h3>
+        <p><b>Description:</b> {{.Description}}</p>
+        <p><b>Accessories:</b> {{.Accessories}}</p>
+        <p><b>Place:</b> {{.Place}}</p>
+        <p><b>Additional Notes:</b> {{.AdditionalNotes}}</p>
+    </div>
+    {{end}}
+{{end}}

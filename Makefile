@@ -1,4 +1,4 @@
-.PHONY: build run test clean
+.PHONY: run test
 
 run:
 	@go run ./cmd/web

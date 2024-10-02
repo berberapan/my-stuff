@@ -1,21 +1,20 @@
 {{define "navbar"}}
 <nav>
     <div>
-        <a href='/' class='navlink'>Start</a>
+        <a href='/' class='navlink'><b>Start</b></a>
     {{if .IsAuthenticated}} 
-        <a href='/stuff' class='navlink'>My Stuff</a> 
+        <a href='/stuff' class='navlink'><b>My Stuff</b></a> 
     {{end}}
     </div>
     <div>
     {{if .IsAuthenticated}}
-        <a href='/' class='navlink'>Profile</a>
         <form action='/logout' method='POST'>
             <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
-            <button class='navlink'>Logout</button>
+            <button class='navlink'><b>Logout</b></button>
         </form>
     {{else}}
-        <a href='/signup' class='navlink'>Sign up</a> 
-        <a href='/login' class='navlink'>Login</a>
+        <a href='/signup' class='navlink'><b>Sign up</b></a> 
+        <a href='/login' class='navlink'><b>Login</b></a>
     {{end}}
     </div>
 </nav>

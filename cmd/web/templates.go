@@ -5,11 +5,14 @@ import (
 	"io/fs"
 	"path/filepath"
 
+	"github.com/berberapan/my-stuff/internal/models"
 	"github.com/berberapan/my-stuff/ui"
 )
 
 type templateData struct {
 	CurrentYear     int
+	Item            models.Item
+	Items           []models.Item
 	Form            any
 	IsAuthenticated bool
 	CSRFToken       string

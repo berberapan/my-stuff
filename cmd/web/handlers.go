@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"net/http"
-	"time"
+	"strconv"
 
 	"github.com/berberapan/my-stuff/internal/models"
 	"github.com/berberapan/my-stuff/internal/validator"
@@ -23,15 +23,11 @@ type loginForm struct {
 }
 
 type addItemForm struct {
-	Name                string    `form:"name"`
-	Description         string    `form:"description,omitempty"`
-	Accessories         string    `form:"accessories,omitempty"`
-	Place               string    `form:"place,omitempty"`
-	Manual              string    `form:"manual,omitempty"`
-	Receipt             string    `form:"receipt,omitempty"`
-	WarrantyExp         time.Time `form:"warranty_exp,omitempty,02-01-2006"`
-	InsuranceExp        time.Time `form:"insurance_exp,omitempty,02-01-2006"`
-	AdditionalNotes     string    `form:"additional_notes,omitempty"`
+	Name                string `form:"name"`
+	Description         string `form:"description,omitempty"`
+	Accessories         string `form:"accessories,omitempty"`
+	Place               string `form:"place,omitempty"`
+	AdditionalNotes     string `form:"additional_notes,omitempty"`
 	validator.Validator `form:"-"`
 }
 
@@ -78,8 +74,45 @@ func (app *application) postSignup(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getStuff(w http.ResponseWriter, r *http.Request) {
+	id := app.sessionManager.GetInt(r.Context(), "authenticatedUserID")
+	items, err := app.items.AllItems(id)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
 	data := app.newTemplateData(r)
+	data.Items = items
 	app.render(w, r, http.StatusOK, "stuff.tmpl", data)
+}
+
+func (app *application) getItem(w http.ResponseWriter, r *http.Request) {
+	urlID, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	id := app.sessionManager.GetInt(r.Context(), "authenticatedUserID")
+	items, err := app.items.AllItems(id)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+	var item models.Item
+	found := false
+	for _, i := range items {
+		if i.ID == urlID {
+			item = i
+			found = true
+			break
+		}
+	}
+	if !found {
+		http.NotFound(w, r)
+		return
+	}
+	data := app.newTemplateData(r)
+	data.Item = item
+	app.render(w, r, http.StatusOK, "item.tmpl", data)
 }
 
 func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
@@ -126,7 +159,7 @@ func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
 	}
 	app.sessionManager.Put(r.Context(), "authenticatedUserID", id)
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(w, r, "/stuff", http.StatusSeeOther)
 }
 
 func (app *application) postLogout(w http.ResponseWriter, r *http.Request) {
@@ -138,6 +171,39 @@ func (app *application) postLogout(w http.ResponseWriter, r *http.Request) {
 	app.sessionManager.Remove(r.Context(), "authenticatedUserID")
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func (app *application) getAddStuff(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
+	data.Form = addItemForm{}
+	app.render(w, r, http.StatusOK, "addstuff.tmpl", data)
+}
+
+func (app *application) postAddStuff(w http.ResponseWriter, r *http.Request) {
+	var form addItemForm
+
+	err := app.decodePostForm(r, &form)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank.")
+	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+		app.render(w, r, http.StatusUnprocessableEntity, "addstuff.tmpl", data)
+		return
+	}
+
+	id := app.sessionManager.GetInt(r.Context(), "authenticatedUserID")
+	err = app.items.Insert(form.Name, form.Description, form.Accessories, form.Place, form.AdditionalNotes, id)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	http.Redirect(w, r, "/stuff", http.StatusSeeOther)
 }
 
 func getHealthz(w http.ResponseWriter, r *http.Request) {

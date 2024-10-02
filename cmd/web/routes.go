@@ -25,8 +25,11 @@ func (app *application) routes() http.Handler {
 
 	mux.Handle("POST /logout", protectedMiddleware.ThenFunc(app.postLogout))
 	mux.Handle("GET /stuff", protectedMiddleware.ThenFunc(app.getStuff))
+	mux.Handle("GET /addstuff", protectedMiddleware.ThenFunc(app.getAddStuff))
+	mux.Handle("POST /addstuff", protectedMiddleware.ThenFunc(app.postAddStuff))
+	mux.Handle("GET /stuff/item/{id}", protectedMiddleware.ThenFunc(app.getItem))
 
-	standardMiddleware := alice.New(app.logRequest, app.recoverPanic)
+	standardMiddleware := alice.New(app.logRequest, app.recoverPanic, commonHeaders)
 
 	return standardMiddleware.Then(mux)
 }

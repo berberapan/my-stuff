@@ -1,4 +1,4 @@
-* {
+nav, main, footer {
     font-family: "Nunito";
 }
 
@@ -19,11 +19,26 @@ header h1 {
     display: flex;
     align-items: center;
     gap: 20px;
+    font-family: "Victor Mono";
 }
 
 header h1 img {
     width: 150px;
     height: auto;
+}
+
+a {
+    color: black;
+}
+
+a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #c76e00;
+    text-decoration: underline;
 }
 
 nav {
@@ -62,6 +77,13 @@ nav a {
     display: inline-block;
 }
 
+nav a.live {
+    color: #c76e00;
+}
+
+nav a.live:hover {
+    text-decoration: none;
+}
 
 nav .navlink {
     display: inline-block;
@@ -93,7 +115,7 @@ form.signup, form.login {
     margin: 15px auto 0;
 }
 
-form input[type='text'], form input[type='password'], form input[type='email'] {
+form input[type='text'], form input[type='password'], form input[type='email'], form textarea {
     width: 75%;
     
 }

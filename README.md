@@ -13,13 +13,17 @@
 <br>
 My Stuff is a web app to organise and keep better track of the stuff you buy.
 
-- Manuals that belongs to the item.
-- Warranties
-- Receipt
-- Its accessories
-- Physical place
+Add information about your stuff to easier track it and the things belonging to it.
 
-etc.
+## Future Versions
+
+Support for
+- Pictures
+- Notifications when warranty or insurance about to expire
+- Manuals that belongs to the item.
+- Receipt
+
+and more.
 
 ## Notes
 This project was done as a part of a course on Devops at Nackademin.

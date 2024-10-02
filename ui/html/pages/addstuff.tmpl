@@ -1,9 +1,31 @@
 {{define "main"}}
-<form class='addstuff' method='post'>
+<form class='signup' method='post' novalidate>
     <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     <div>
         <label for='name'>Name</label><br>
+        {{with .Form.FieldErrors.name}}
+            <label class='error'>{{.}}</label>
+        {{end}}
         <input type='text' name='name' id='name' autocomplete='off'>
+    </div>
+    <div>
+        <label for='description'>Description</label><br>
+        <textarea id="description" name="description"></textarea>
+    </div>
+    <div>
+        <label for='accessories'>Accessories</label><br>
+        <textarea id="accessories" name="accessories"></textarea>
+    </div>
+    <div>
+        <label for='place'>Place</label><br>
+        <input type='text' name='place' id='place'>
+    </div>
+    <div>
+        <label for='additional_notes'>Additional Notes</label><br>
+        <textarea id="additional_notes" name="additional_notes"></textarea>
+    </div>
+    <div>
+        <input type='submit' value='Add item'>
     </div>
 </form>
 {{end}}

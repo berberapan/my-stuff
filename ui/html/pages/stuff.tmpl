@@ -1,3 +1,21 @@
 {{define "main"}}
-<p>12345</p>
+    <a href="/addstuff"><button>Add item</button></a>
+    <br>
+    <h2>The Stuff</h2>
+    {{if .Items}}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Item</th>
+        </tr>
+        {{range .Items}}
+        <tr>
+            <td><a href="stuff/item/{{.ID}}">{{.ID}}</a></td>
+            <td><a href="stuff/item/{{.ID}}">{{.Name}}</a></td>
+        </tr>
+        {{end}}
+    </table>
+    {{else}}
+        <p>No stuff added. Click on Add Item to get started</p>
+    {{end}}
 {{end}}
