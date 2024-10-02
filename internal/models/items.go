@@ -14,14 +14,9 @@ type Item struct {
 	Description     string
 	Accessories     string
 	Place           string
-	Manual          string
-	Receipt         string
-	WarrantyExp     time.Time
-	InsuranceExp    time.Time
 	AdditionalNotes string
 	UserID          int
 	CreatedAt       time.Time
-	UpdatedAt       time.Time
 }
 
 type ItemModel struct {
