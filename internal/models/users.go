@@ -12,7 +12,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// interface to help with testing later
 type UserModelInterface interface {
 	Insert(email, password string) error
 	Authenticate(email, password string) (int, error)
@@ -35,15 +34,13 @@ func (um *UserModel) Insert(email, password string) error {
 	if err != nil {
 		return err
 	}
-
-	statement := `INSERT INTO users (email, password, created_at)
-    VALUES($1, $2, NOW())`
+	statement := "INSERT INTO users (email, password, created_at) VALUES($1, $2, NOW())"
 
 	_, err = um.DB.Exec(context.Background(), statement, email, string(hashedPassword))
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) {
-			if pgErr.Code == "23505" && strings.Contains(pgErr.Message, "users_uc_email") {
+			if pgErr.Code == "23505" && strings.Contains(pgErr.Message, "users_email_key") {
 				return ErrDuplicateEmail
 			}
 		}

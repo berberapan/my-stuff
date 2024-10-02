@@ -57,7 +57,7 @@ func main() {
 	sessionManager := scs.New()
 	sessionManager.Store = pgxstore.New(db)
 	sessionManager.Lifetime = 12 * time.Hour
-	sessionManager.Cookie.Secure = false // TODO change to true when TSL sorted
+	sessionManager.Cookie.Secure = false
 
 	app := &application{
 		logger:         logger,
